@@ -1,0 +1,21 @@
+{
+  "name": "Rondas de Seguridad",
+  "short_name": "Rondas QR",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#222222",
+  "theme_color": "#ffe600",
+  "description": "Galería de códigos QR para puntos de vigilancia",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

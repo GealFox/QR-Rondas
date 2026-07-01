@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rondas de Seguridad</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffe600">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body { margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background-color: #222; font-family: 'Arial', sans-serif; }
+        .carousel { position: relative; width: 90%; max-width: 350px; overflow: hidden; background: #ffe600; padding: 15px; border-radius: 10px; box-sizing: border-box; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .slides { display: flex; transition: transform 0.4s ease-in-out; }
+        .slide { min-width: 100%; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
+        .qr-container { background: white; padding: 15px; border-radius: 5px; width: 100%; display: flex; justify-content: center; box-sizing: border-box; }
+        .label { margin-top: 15px; background: #ffcc00; border: 3px solid #111; border-radius: 15px; padding: 10px; width: 100%; text-align: center; font-weight: bold; font-size: 18px; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); text-transform: uppercase; box-sizing: border-box; }
+        .controls { margin-top: 25px; display: flex; gap: 15px; }
+        button { padding: 12px 25px; cursor: pointer; border: none; background: #ffe600; color: #111; font-weight: bold; font-size: 16px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    </style>
+</head>
+<body>
+
+    <div class="carousel">
+        <div class="slides" id="slider"></div>
+    </div>
+
+    <div class="controls">
+        <button onclick="moveSlide(-1)">◀ Anterior</button>
+        <button onclick="moveSlide(1)">Siguiente ▶</button>
+    </div>
+
+    <script>
+        const puestos = [
+            { titulo: "QR: PUESTO 2 INICIO", datos: "350ffe93-7872-4912-8309-e469d5c823ae" },
+            { titulo: "QR: PUESTO 3 GARITA", datos: "baf50453-9ef0-46b8-9d86-05ac1e0739b5" },
+            { titulo: "QR: CAJA DE MATAFUEGO", datos: "d5a7d074-5e46-4a6d-826a-72e8d259c151" },
+            { titulo: "QR: CLUD HOUSE", datos: "5e509fc3-6879-424e-86aa-41cf46677014" },
+            { titulo: "QR: ESQUINA ZONAS 1 Y 2", datos: "e22cc232-94f6-4cf7-b032-e58a8c36744a" },
+            { titulo: "QR: PUESTO 4", datos: "91d05ad0-df41-4e07-821a-0ffba2f5d6b1" },
+            { titulo: "QR: RIOBAMBA", datos: "3f35542d-e1b7-4208-afd8-854596131151" },
+            { titulo: "QR: PUESTO 2/2 FINAL", datos: "12da1ef6-5ed2-4f38-83bd-144ec5d9dd3f" }
+        ];
+
+        const sliderContenedor = document.getElementById('slider');
+
+        puestos.forEach((puesto, i) => {
+            const slide = document.createElement('div');
+            slide.className = 'slide';
+            const qrDiv = document.createElement('div');
+            qrDiv.className = 'qr-container';
+            qrDiv.id = `qr-${i}`;
+            const etiqueta = document.createElement('div');
+            etiqueta.className = 'label';
+            etiqueta.textContent = puesto.titulo;
+            slide.appendChild(qrDiv); slide.appendChild(etiqueta);
+            sliderContenedor.appendChild(slide);
+
+            new QRCode(document.getElementById(`qr-${i}`), { text: puesto.datos, width: 250, height: 250 });
+        });
+
+        let index = 0;
+        function moveSlide(step) {
+            index = (index + step + puestos.length) % puestos.length;
+            sliderContenedor.style.transform = `translateX(-${index * 100}%)`;
+        }
+
+        // Registro de Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js'); });
+        }
+    </script>
+</body>
+</html>
+
